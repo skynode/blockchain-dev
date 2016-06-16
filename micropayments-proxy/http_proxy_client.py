@@ -1,7 +1,7 @@
 '''
 This client will invoke the micropayments-proxy, payments_handler.py,
-only when the client receives an HTTP status_code 402 from some 
-service running on some server to which an HTTP request has been made.
+when the client receives an HTTP status_code 402 from some service
+running on some server to which an HTTP request has been made.
 The payments-handler won't come into play under any other scenario.
 
 ---MIT Licensed
@@ -35,34 +35,22 @@ def main():
             2.PAYWALLED_SERVER
             3.Quit
             """)                    
-        validurl = input('please select a number to continue to a server')
+        validurl = input('[+] please select a number to continue to a server')
         if(validurl == "1" or validurl=="2"):
-            res = requests.get(url=validurl)
+            res = requests.get(url=validurl)            
             if(res.status_code==402):
                 print("[+] " + res.status_code + ": you've hit a paywalled resource, redirecting to micropayments proxy...\n")
                 
-                '''pass paywalled server response to micropayments proxy 
+                '''pass paywalled server response params to micropayments proxy 
                    micropayments proxy processes satoshi payment for client >
                    by interacting in a particular way with paywalled server >
                    and responds to http_proxy_client with HTTP 200 status_code <
                    http_proxy_client is granted access to paywalled resource <
                 '''
-                #continue from here...
-                proxyres = requests.get(url=PAYMENTS_PROXY + "/paymentreq", proxies=proxy)
+                proxy_response = requests.get(url=validurl, proxies=proxy)
             else:
                 print(res.status_code + " " + res.text)            
-        elif(validurl=="3"):
+        else:
             print("quitting...")
             
-        try:
-            if(requests.get().status_code != 402):
         
-        #response from VANILLA_SERVER
-        print ("You've hit the VANILLA_SERVER!".upper())
-        print (requests.get(url=VANILLA_SERVER).text)           
-        
-        
-        
-        #test that payments-handler server is up
-        #if response.status_code=50x, return... 
-        #close connection with satoshi-requesting server
