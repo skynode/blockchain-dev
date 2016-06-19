@@ -12,7 +12,7 @@ The payments-handler won't come into play under any other scenario.
 import requests, validators
 
 VANILLA_SERVER      = "http://127.0.0.1:5050"
-PAYWALLED_SERVER    = "http://127.0.0.1:5051
+PAYWALLED_SERVER    = "http://127.0.0.1:5051"    
 PAYMENTS_PROXY      = "http://127.0.0.1:9000"
 
 #proxies dict syntax: {"protocol":"ip:port",...}
@@ -42,15 +42,19 @@ def main():
                 print("[+] " + res.status_code + ": you've hit a paywalled resource, redirecting to micropayments proxy...\n")
                 
                 '''pass paywalled server response params to micropayments proxy 
-                   micropayments proxy processes satoshi payment for client >
-                   by interacting in a particular way with paywalled server >
-                   and responds to http_proxy_client with HTTP 200 status_code <
-                   http_proxy_client is granted access to paywalled resource <
+                   micropayments proxy processes satoshi payment for client 
+                   by interacting in a particular way with paywalled server 
+                   and responds to http_proxy_client with HTTP 200 status_code
+                   http_proxy_client is granted access to paywalled resource 
                 '''
                 proxy_response = requests.get(url=validurl, proxies=proxy)
             else:
                 print(res.status_code + " " + res.text)            
         else:
             print("quitting...")
+
+if __name__='__main__':
+    main()
+    
             
         
