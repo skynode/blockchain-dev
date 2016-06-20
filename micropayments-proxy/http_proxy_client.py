@@ -9,7 +9,7 @@ The payments-handler won't come into play under any other scenario.
 
 #!/usr/bin/env python3
 
-import requests, validators
+import requests as reqs, validators
 
 VANILLA_SERVER      = "http://127.0.0.1:5050"
 PAYWALLED_SERVER    = "http://127.0.0.1:5051"    
@@ -37,7 +37,7 @@ def main():
             """)                    
         validurl = input('[+] please select a number to continue to a server')
         if(validurl == "1" or validurl=="2"):
-            res = requests.get(url=validurl)            
+            res = reqs.get(url=validurl)            
             if(res.status_code==402):
                 print("[+] " + res.status_code + ": you've hit a paywalled resource, redirecting to micropayments proxy...\n")
                 
@@ -47,7 +47,7 @@ def main():
                    and responds to http_proxy_client with HTTP 200 status_code
                    http_proxy_client is granted access to paywalled resource 
                 '''
-                proxy_response = requests.get(url=validurl, proxies=proxy)
+                proxy_response = reqs.get(url=validurl, proxies=proxy)
             else:
                 print(res.status_code + " " + res.text)            
         else:

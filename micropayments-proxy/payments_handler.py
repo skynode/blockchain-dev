@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-import requests
-
+import requests as pyreq
 
 from flask import Flask, request, Response
 from werkzeug.datastructures import Headers
@@ -11,12 +10,16 @@ from two1.bitrequests import BitTransferRequests
 
 app = Flask(__name__)
 
+#instantiate a wallet
 _wallet = Wallet()
-requests = BitTransferRequests(_wallet)
 
-''' simple micropayment proxy with one function:
+#this function handles bitcoin payments using the wallet object as parameter
+bt_reqs = BitTransferRequests(_wallet)
+
+''' simple satoshi-payment proxy with one function:
     receive request from client and process
-    payment on server address received as parameter
+    payment on destination server address 
+    passed as url parameter in client GET request
 '''
 @app.route('/')
 def main():
@@ -31,7 +34,7 @@ def main():
         h.remove('Content-Length')
         
         #create a response object to hold request result based on param url received from client
-        res = requests.request(
+        res = pyreq.request(
             method=request.method,
             url=request.url,
             headers=h,
@@ -41,19 +44,19 @@ def main():
             timeout=10
         )
     except(
-        requests.exceptions.Timeout,
-        requests.exception.ConnectTimeout,
-        requests.exception.ReadTimeout
+        pyreq.exceptions.Timeout,
+        pyreq.exception.ConnectTimeout,
+        pyreq.exception.ReadTimeout
     ):
         return Response(status=504)
      except(
-         requests.exceptions.ConnectionError,
-         requests.exceptions.HTTPError,
-         requests.exceptions.TooManyRedirects
+         pyreq.exceptions.ConnectionError,
+         pyreq.exceptions.HTTPError,
+         pyreq.exceptions.TooManyRedirects
      ):
         return Response(status=502)
      except(
-         requests.exceptions.RequestException, Exception
+         pyreq.exceptions.RequestException, Exception
      ) as e:
          if app.debug:
             raise e
