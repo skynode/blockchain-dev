@@ -31,10 +31,11 @@ def main():
         validurl = True
         while validurl:
             print("""
-            1.VANILLA_SERVER
-            2.PAYWALLED_SERVER
-            3.Quit
-            """)                    
+                1.VANILLA_SERVER
+                2.PAYWALLED_SERVER
+                3.Quit
+                """)     
+                break           
         validurl = input('[+] please select a number to continue to a server')
         if(validurl == "1" or validurl=="2"):
             res = reqs.get(url=validurl)            
@@ -53,7 +54,7 @@ def main():
         else:
             print("quitting...")
 
-if __name__='__main__':
+if __name__=='__main__':
     main()
     
             

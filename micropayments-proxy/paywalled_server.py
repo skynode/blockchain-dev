@@ -1,4 +1,8 @@
-from flask import Flask, request
+#!/usr/bin/env python3
+
+import requests
+
+from flask import Flask, request, Response
 from two1.wallet import Wallet
 from two1.bitserv.flask import Payment
 
@@ -10,9 +14,12 @@ _payment = Payment(app, _wallet)
 #catch all requests to all resource paths on this server
 @app.route('/', defaults={'path':''})
 @app.route('/<path:path>')
-@payment.required(1500)
-def catch_call(path):
-     return "payment received from micropayments proxy for paywalled resource: %s" %path
+@_payment.required(1500)
+def catch_all(path):
+    
+
+
+    return "payment received from micropayments proxy for paywalled resource: %s" %path
 
 '''
 @app.route("/paywalled_resource")
