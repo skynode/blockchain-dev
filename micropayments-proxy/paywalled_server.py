@@ -2,9 +2,11 @@
 
 import requests
 
-from flask import Flask, request, Response
+from flask import Flask, request
 from two1.wallet import Wallet
 from two1.bitserv.flask import Payment
+
+from werkzeug.datastructures import Headers
 
 app = Flask(__name__)
 
@@ -16,26 +18,19 @@ _payment = Payment(app, _wallet)
 @app.route('/<path:path>')
 @_payment.required(1500)
 def catch_all(path):
-    
 
+    #retrieve and type-cast the header data
+    hed = Headers(request.headers)
 
-    return "payment received from micropayments proxy for paywalled resource: %s" %path
+    #remove the bitcoin micropayment headers to receive payment from micropayments proxy
+    hed.remove('HTTP_BITCOIN_MICROPAYMENT_SERVER')
+    hed.remove('HTTP_RETURN_WALLET_ADDRESS')
+    hed.remove('Bitcoin-Transfer')
+    hed.remove('Authorization')
+    hed.remove('Content-Length')
 
-'''
-@app.route("/paywalled_resource")
-def confirm_proxy_payment(path):
-    if "X-Forwarded-For" in request.headers:
-        return "payment received from micropayments proxy for "+ "first".upper() + " paywalled resource"
-    else:
-        return "no proxy"      
-        
-@app.route("/paywalled_resource_2")
-def confirm_second_proxy_payment(path):
-    if "X-Forwarded-For" in request.headers:
-        return "payment received from micropayments proxy for "+ "second".upper() + " paywalled resource"
-    else:
-        return "no proxy"      
-'''  
+    #send payment notification to micropayments proxy
+    return "[+] " + str(requests.codes['OK']) + " - payment received from micropayments proxy for paywalled resource\n" 
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=5051)
+    app.run(host='0.0.0.1', port=5051)
