@@ -35,7 +35,7 @@ def main():
             params=request.args if request.args else None,
             timeout=10
         )            
-
+    #handle BitTransferRequests exceptions
     except BitRequestsError as biterror:
         print("BitRequestsError: {0}".format(biterror))
      
