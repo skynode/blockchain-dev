@@ -6,7 +6,11 @@ when the client receives an HTTP status_code 402 from some service
 running on some server to which an HTTP request has been made.
 The payments-handler won't be activated play under any other scenario.
 
----MIT Licensed
+This file is part of blockchain-dev
+
+It is subject to the license terms in the LICENSE file found in the top-level
+directory of this distribution.
+
 '''
 #!/usr/bin/env python3
 
