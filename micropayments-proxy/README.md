@@ -1,5 +1,5 @@
 #Micropayments Proxy
-A proxy client, `http_proxy_client.py`, will invoke a Bitcoin micropayments proxy server, `payments_handler.py`, when the client receives an HTTP status code 402 - `Payment Required` - from some service running on some server, `paywalled_server.py`, to which an HTTP request has been made. The payments proxy won't be activated under any other scenario. A plain vanilla server is included for testing purposes.
+A proxy client, `http_proxy_client.py`, will invoke the services of a Bitcoin micropayments proxy server, `payments_handler.py`, when the client receives an HTTP status code 402 - `Payment Required` - from some service running on some server, `paywalled_server.py`, to which an HTTP request has been made. The payments proxy won't be activated under any other scenario. A plain vanilla server is included for testing purposes.
 
 ##REQUIREMENTS##
 These servers were built on and run successfully on the [21.co](https://21.co) virtual network running on an instance of Amazon AWS Ubuntu 14.04. To install 21 on your AWS Ubuntu instance, run `curl https://21.co | sh` then run `21 --help` for help documentation. 
